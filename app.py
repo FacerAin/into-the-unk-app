@@ -53,17 +53,18 @@ with c30:
     if uploaded_file is not None:
         df = pd.read_csv(uploaded_file)
         cols = df.columns
-        options = st.multiselect(
-            "분석할 컬럼들을 선택해주세요.",
-            cols,
-        )
-        model_name = st.selectbox(
-            "사용할 토크나이저를 선택해주세요.",
-            model_list,
-        )
-        special_token_text = st.text_area(",(콤마) 단위로 Vocab에 추가할 토큰을 입력해주세요.")
-        sentences = extract_sentences(df, options)
-        run = st.button("분석!")
+        with st.form("basic"):
+            options = st.multiselect(
+                "분석할 컬럼들을 선택해주세요.",
+                cols,
+            )
+            model_name = st.selectbox(
+                "사용할 토크나이저를 선택해주세요.",
+                model_list,
+            )
+            special_token_text = st.text_area(",(콤마) 단위로 Vocab에 추가할 토큰을 입력해주세요.")
+            sentences = extract_sentences(df, options)
+            run = st.form_submit_button("분석!")
 
     else:
         st.info(
@@ -80,7 +81,6 @@ if run:
     tokenizer.add_tokens(special_token_text.split(","))
 
     original_sentences, tokenized_sentences = tokenize_sentences(sentences, tokenizer)
-    print(tokenized_sentences)
     st.info(
         f"""
             👆 총 {len(tokenized_sentences)}개의 UNK 토큰을 포함한 문장이 있습니다
