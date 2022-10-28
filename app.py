@@ -30,7 +30,7 @@ def tokenize_sentences(sentences, tokenizer):
     return original_sentences, tokenized_sentences
 
 
-st.set_page_config(page_icon="❄️", page_title="CSV Wrangler", layout="wide")
+st.set_page_config(page_icon="❄️", page_title="Into The Unknown", layout="wide")
 
 # st.image("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/285/balloon_1f388.png", width=100)
 st.image(
@@ -64,6 +64,7 @@ with c30:
             )
             special_token_text = st.text_area(",(콤마) 단위로 Vocab에 추가할 토큰을 입력해주세요.")
             sentences = extract_sentences(df, options)
+
             run = st.form_submit_button("분석!")
 
     else:
@@ -72,6 +73,7 @@ with c30:
                 👆 Upload a .csv file first.
                 """
         )
+        st.snow()
 
         st.stop()
 
@@ -83,7 +85,7 @@ if run:
     original_sentences, tokenized_sentences = tokenize_sentences(sentences, tokenizer)
     st.info(
         f"""
-            👆 총 {len(tokenized_sentences)}개의 UNK 토큰을 포함한 문장이 있습니다
+            👆 총 {len(tokenized_sentences)}개의 UNK 토큰을 포함한 문장이 있습니다 (전체 문장 개수: {len(sentences)})
             """
     )
     data_df = pd.DataFrame(
