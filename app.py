@@ -5,8 +5,11 @@ from transformers import AutoTokenizer
 
 model_list = [
     "klue/roberta-base",
+    "klue/roberta-large",
+    "klue/bert-base",
     "monologg/koelectra-base-v3-discriminator",
     "beomi/KcELECTRA-base",
+    "beomi/KcELECTRA-base-v2022",
 ]
 
 
@@ -45,23 +48,14 @@ c29, c30, c31 = st.columns([1, 6, 1])
 
 with c30:
 
-    uploaded_file = st.file_uploader(
-        "Upload Your CSV FILE",
-        key="1",
-    )
+    uploaded_file = st.file_uploader("Upload Your CSV FILE", key="1",)
 
     if uploaded_file is not None:
-        df = pd.read_csv(uploaded_file)
+        df = pd.read_csv(uploaded_file, encoding="UTF-8")
         cols = df.columns
         with st.form("basic"):
-            options = st.multiselect(
-                "분석할 컬럼들을 선택해주세요.",
-                cols,
-            )
-            model_name = st.selectbox(
-                "사용할 토크나이저를 선택해주세요.",
-                model_list,
-            )
+            options = st.multiselect("분석할 컬럼들을 선택해주세요.", cols,)
+            model_name = st.selectbox("사용할 토크나이저를 선택해주세요.", model_list,)
             special_token_text = st.text_area(",(콤마) 단위로 Vocab에 추가할 토큰을 입력해주세요.")
             sentences = extract_sentences(df, options)
 
